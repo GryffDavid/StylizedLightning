@@ -15,7 +15,7 @@ namespace ToonLightning
 
         static Random Random = new Random();
 
-        struct Node
+        public struct Node
         {
             public Vector2 startPosition, EndPosition, Direction;
             public float Angle, Length, Width;
@@ -25,7 +25,7 @@ namespace ToonLightning
 
         VertexPositionColor[] vertices;// = new VertexPositionColor[length];
         VertexPositionColor[] vertices2;// = new VertexPositionColor[length];
-        List<Node> Nodes = new List<Node>();
+        public List<Node> Nodes = new List<Node>();
 
         public Vector2 StartPosition, EndPosition;
 
@@ -35,7 +35,7 @@ namespace ToonLightning
             vertices = new VertexPositionColor[length];
             vertices2 = new VertexPositionColor[length];
 
-            StartPosition = new Vector2(100, 400);
+            StartPosition = new Vector2(50, 50);
             EndPosition = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
 
             Node firstNode = new Node() { startPosition = StartPosition, Angle = Random.Next(0, 45), Length = Random.Next(15, 50) };
@@ -107,16 +107,20 @@ namespace ToonLightning
 
                 NewNodes.Add(node);
             }
-            
+
+            Nodes = NewNodes;
+
+
+
             vertices[0] = new VertexPositionColor(new Vector3(firstNode.startPosition, 0), Color.White);
             vertices[1] = new VertexPositionColor(new Vector3(firstNode.EndPosition, 0), Color.White);
-
 
             for (int i = 2; i < length; i += 2)
             {
                 vertices[i] = new VertexPositionColor(new Vector3(NewNodes[(i / 2) - 1].EndPosition, 0), Color.White);
                 vertices[i + 1] = new VertexPositionColor(new Vector3(NewNodes[i / 2].EndPosition, 0), Color.White);
             }
+
         }
 
         public void LoadContent(ContentManager content)

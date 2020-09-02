@@ -17,6 +17,7 @@ namespace ToonLightning
         SpriteBatch spriteBatch;
         BasicEffect BasicEffect;
         List<ToonLightning> LightningList = new List<ToonLightning>();
+        Texture2D blockTex;
 
         public Game1()
         {
@@ -37,6 +38,8 @@ namespace ToonLightning
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            blockTex = Content.Load<Texture2D>("WhiteBlock");
+
             BasicEffect = new BasicEffect(GraphicsDevice);
             BasicEffect.Projection = Matrix.CreateOrthographicOffCenter(0, 1280, 720, 0, 0, 1);
         }
@@ -51,7 +54,7 @@ namespace ToonLightning
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
                 LightningList.Clear();
-                ToonLightning newLightning = new ToonLightning(GetEven((int)Vector2.Distance(new Vector2(100, 400), new Vector2(Mouse.GetState().X, Mouse.GetState().Y))/16));
+                ToonLightning newLightning = new ToonLightning(GetEven((int)Vector2.Distance(new Vector2(50, 50), new Vector2(Mouse.GetState().X, Mouse.GetState().Y))/16));
                 LightningList.Add(newLightning);
             }
 
@@ -61,6 +64,13 @@ namespace ToonLightning
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
+            spriteBatch.Begin();
+            for (int i = 0; i < LightningList[0].Nodes.Count; i++)
+            {
+                spriteBatch.Draw(blockTex, LightningList[0].Nodes[i].startPosition, Color.White);
+            }
+            spriteBatch.End();
+
             foreach (EffectPass pass in BasicEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
