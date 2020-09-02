@@ -60,20 +60,25 @@ namespace ToonLightning
                 LightningList.Add(newLightning);
             }
 
+            foreach (ToonLightning bolt in LightningList)
+            {
+                bolt.Update(gameTime);
+            }
+
             base.Update(gameTime);
         }
         
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-            //spriteBatch.Begin();
-            //for (int i = 0; i < LightningList[0].NodeList.Count; i++)
-            //{
-            //    spriteBatch.Draw(blockTex, LightningList[0].NodeList[i].NodePosition, Color.White);
-            //    spriteBatch.DrawString(font, i.ToString(), LightningList[0].NodeList[i].NodePosition, Color.Red);
+            spriteBatch.Begin();
+            for (int i = 0; i < LightningList[0].NodeList.Count; i++)
+            {
+                spriteBatch.Draw(blockTex, LightningList[0].NodeList[i].NodePosition, Color.White);
+                spriteBatch.DrawString(font, i.ToString(), LightningList[0].NodeList[i].NodePosition, Color.Red);
 
-            //}
-            //spriteBatch.End();
+            }
+            spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, RasterizerState.CullNone);
             foreach (EffectPass pass in BasicEffect.CurrentTechnique.Passes)
