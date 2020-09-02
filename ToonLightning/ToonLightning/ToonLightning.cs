@@ -33,7 +33,7 @@ namespace ToonLightning
             StartPosition = new Vector2(100, 400);
             EndPosition = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
 
-            Node firstNode = new Node() { startPosition = StartPosition, Angle = Random.Next(0, 45), Length = Random.Next(5, 20) };
+            Node firstNode = new Node() { startPosition = StartPosition, Angle = Random.Next(0, 45), Length = Random.Next(15, 50) };
             firstNode.EndPosition = firstNode.startPosition + new Vector2((float)Math.Cos(MathHelper.ToRadians(firstNode.Angle)) * firstNode.Length, (float)Math.Sin(MathHelper.ToRadians(firstNode.Angle)) * firstNode.Length);
 
             Nodes.Add(firstNode);
@@ -42,16 +42,16 @@ namespace ToonLightning
             {
                 float ang;
 
-                if (Random.NextDouble() >= 0.2)
+                if (Random.NextDouble() >= 0.5)
                 {
-                    ang = (MathHelper.Lerp(Nodes[Nodes.Count - 1].Angle, Random.Next(-360, 360), 0.2f));
+                    ang = (MathHelper.Lerp(Nodes[Nodes.Count - 1].Angle, Random.Next(-270, 270), 0.1f));
                 }
                 else
                 {
-                    ang = Random.Next((-90)/i, 90/i);
+                    ang = Random.Next((-90) / i, 90 / i);
                 }
 
-                Node secondNode = new Node() { startPosition = Nodes[i-1].EndPosition, Angle = ang, Length = Random.Next(5, 20) };
+                Node secondNode = new Node() { startPosition = Nodes[i-1].EndPosition, Angle = ang, Length = Random.Next(15, 50) };
                 secondNode.EndPosition = secondNode.startPosition + new Vector2((float)Math.Cos(MathHelper.ToRadians(secondNode.Angle)) * secondNode.Length, (float)Math.Sin(MathHelper.ToRadians(secondNode.Angle)) * secondNode.Length);
 
                 Nodes.Add(secondNode);
