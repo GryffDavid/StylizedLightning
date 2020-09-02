@@ -16,12 +16,13 @@ namespace ToonLightning
         struct Node
         {
             public Vector2 startPosition, EndPosition, Direction;
-            public float Angle, Length;
+            public float Angle, Length, Width;
         }
 
         int length = 202;
 
         VertexPositionColor[] vertices;// = new VertexPositionColor[length];
+        VertexPositionColor[] vertices2;// = new VertexPositionColor[length];
         List<Node> Nodes = new List<Node>();
 
         public Vector2 StartPosition, EndPosition;
@@ -30,10 +31,13 @@ namespace ToonLightning
         {
             length = len;
             vertices = new VertexPositionColor[length];
+            vertices2 = new VertexPositionColor[length];
+
             StartPosition = new Vector2(100, 400);
             EndPosition = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
 
             Node firstNode = new Node() { startPosition = StartPosition, Angle = Random.Next(0, 45), Length = Random.Next(15, 50) };
+            firstNode.Direction = new Vector2((float)Math.Cos(MathHelper.ToRadians(firstNode.Angle)) * firstNode.Length, (float)Math.Sin(MathHelper.ToRadians(firstNode.Angle)) * firstNode.Length);
             firstNode.EndPosition = firstNode.startPosition + new Vector2((float)Math.Cos(MathHelper.ToRadians(firstNode.Angle)) * firstNode.Length, (float)Math.Sin(MathHelper.ToRadians(firstNode.Angle)) * firstNode.Length);
 
             Nodes.Add(firstNode);
@@ -53,6 +57,7 @@ namespace ToonLightning
 
                 Node secondNode = new Node() { startPosition = Nodes[i-1].EndPosition, Angle = ang, Length = Random.Next(15, 50) };
                 secondNode.EndPosition = secondNode.startPosition + new Vector2((float)Math.Cos(MathHelper.ToRadians(secondNode.Angle)) * secondNode.Length, (float)Math.Sin(MathHelper.ToRadians(secondNode.Angle)) * secondNode.Length);
+                secondNode.Direction = new Vector2((float)Math.Cos(MathHelper.ToRadians(secondNode.Angle)) * secondNode.Length, (float)Math.Sin(MathHelper.ToRadians(secondNode.Angle)) * secondNode.Length);
 
                 Nodes.Add(secondNode);
             }
@@ -85,8 +90,22 @@ namespace ToonLightning
 
             for (int i = 2; i < length; i += 2)
             {
+                Vector3 NewDir;
+                double ang;
+
                 vertices[i] = new VertexPositionColor(new Vector3(NewNodes[(i / 2) - 1].EndPosition, 0), Color.White);
                 vertices[i + 1] = new VertexPositionColor(new Vector3(NewNodes[i / 2].EndPosition, 0), Color.White);
+
+                NewDir = vertices[i].Position - vertices[i + 1].Position;
+                NewDir.Normalize();
+
+                ang = Math.Atan2(NewDir.Y, NewDir.X) - MathHelper.ToRadians(90);
+
+                NewDir = new Vector3((float)Math.Cos(ang), (float)Math.Sin(ang), 0);
+
+                vertices2[i] = new VertexPositionColor(vertices[i].Position - (NewDir * 10), Color.Red);
+                vertices2[i+1] = new VertexPositionColor(vertices[i].Position + (NewDir * 10), Color.Red);
+
             }
         }
 
@@ -103,6 +122,8 @@ namespace ToonLightning
         public void Draw(GraphicsDevice graphics)
         {
             graphics.DrawUserPrimitives(PrimitiveType.LineList, vertices, 0, (length/2)-2);
+            graphics.DrawUserPrimitives(PrimitiveType.LineList, vertices2, 0, (length / 2) - 2);
+
         }
     }
 }
