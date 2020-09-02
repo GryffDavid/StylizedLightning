@@ -42,7 +42,7 @@ namespace ToonLightning
                     {
                         NodePosition = new Vector2(100, 100),
                         Angle = Random.Next(-90, 90),
-                        Width = Random.Next(5, 15)
+                        Width = Random.Next(5, 10)
                     };
 
                     newNode.TangentAngle = newNode.Angle - 90;
@@ -78,7 +78,7 @@ namespace ToonLightning
                     {
 
                         //ang = Random.Next(-180 / i, 180 / i);
-                        ang = (MathHelper.Lerp(NodeList[NodeList.Count - 1].Angle, Random.Next(-90, 90), 0.2f));
+                        ang = (MathHelper.Lerp(NodeList[NodeList.Count - 1].Angle, Random.Next(-90, 90), 0.2f))/i;
                     }
 
                     if (Random.NextDouble() > 0.8)
@@ -103,7 +103,7 @@ namespace ToonLightning
                     {
                         NodePosition = NodeList[i-1].NodeEnd,
                         Angle = ang,
-                        Width = MathHelper.Lerp(NodeList[i-1].Width, Random.Next(0, 15), 0.2f)
+                        Width = MathHelper.Lerp(NodeList[i-1].Width, Random.Next(0, 15), 0.3f)
                     };
 
                     newNode.TangentAngle = newNode.Angle - 90;
