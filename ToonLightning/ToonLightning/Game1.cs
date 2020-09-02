@@ -18,7 +18,7 @@ namespace ToonLightning
         BasicEffect BasicEffect;
         List<ToonLightning> LightningList = new List<ToonLightning>();
         Texture2D blockTex;
-
+        SpriteFont font;
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -30,7 +30,7 @@ namespace ToonLightning
                 
         protected override void Initialize()
         {
-            LightningList.Add(new ToonLightning(102));
+            LightningList.Add(new ToonLightning());
             base.Initialize();
         }
         
@@ -39,9 +39,11 @@ namespace ToonLightning
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             blockTex = Content.Load<Texture2D>("WhiteBlock");
+            font = Content.Load<SpriteFont>("SpriteFont1");
 
             BasicEffect = new BasicEffect(GraphicsDevice);
             BasicEffect.Projection = Matrix.CreateOrthographicOffCenter(0, 1280, 720, 0, 0, 1);
+            BasicEffect.VertexColorEnabled = true;
         }
         
         protected override void UnloadContent()
@@ -54,7 +56,7 @@ namespace ToonLightning
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
                 LightningList.Clear();
-                ToonLightning newLightning = new ToonLightning(GetEven((int)Vector2.Distance(new Vector2(50, 50), new Vector2(Mouse.GetState().X, Mouse.GetState().Y))/16));
+                ToonLightning newLightning = new ToonLightning();
                 LightningList.Add(newLightning);
             }
 
@@ -65,12 +67,15 @@ namespace ToonLightning
         {
             GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
-            for (int i = 0; i < LightningList[0].Nodes.Count; i++)
+            for (int i = 0; i < LightningList[0].NodeList.Count; i++)
             {
-                spriteBatch.Draw(blockTex, LightningList[0].Nodes[i].startPosition, Color.White);
+                spriteBatch.Draw(blockTex, LightningList[0].NodeList[i].NodePosition, Color.White);
+                spriteBatch.DrawString(font, i.ToString(), LightningList[0].NodeList[i].NodePosition, Color.Red);
+
             }
             spriteBatch.End();
 
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, RasterizerState.CullNone);
             foreach (EffectPass pass in BasicEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
@@ -80,6 +85,9 @@ namespace ToonLightning
                     lightning.Draw(GraphicsDevice);
                 }
             }
+            spriteBatch.End();
+
+            
 
             base.Draw(gameTime);
         }
