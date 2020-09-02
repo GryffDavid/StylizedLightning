@@ -122,41 +122,41 @@ namespace ToonLightning
                 }
             }
 
-            #region Adjust Deltas
-            float DeltaY = NodeList[NodeList.Count - 1].NodeEnd.Y - EndPosition.Y;
-            float DeltaX = NodeList[NodeList.Count - 1].NodeEnd.X - EndPosition.X;
+            //#region Adjust Deltas
+            //float DeltaY = NodeList[NodeList.Count - 1].NodeEnd.Y - EndPosition.Y;
+            //float DeltaX = NodeList[NodeList.Count - 1].NodeEnd.X - EndPosition.X;
 
-            List<Node> NewNodes = new List<Node>();
-            NewNodes.Add(NodeList[0]);
-            NewNodes.Add(NodeList[1]);
+            //List<Node> NewNodes = new List<Node>();
+            //NewNodes.Add(NodeList[0]);
+            //NewNodes.Add(NodeList[1]);
 
 
-            for (int i = 2; i < 100 / 2; i++)
-            {
-                Node node = NodeList[i];
-                double dif = (i / (double)((100 - 2) / 2));
+            //for (int i = 2; i < 100 / 2; i++)
+            //{
+            //    Node node = NodeList[i];
+            //    double dif = (i / (double)((100 - 2) / 2));
 
-                node.NodeEnd.Y -= (float)(DeltaY * dif);
-                node.NodePosition.Y -= (float)(DeltaY * dif);
+            //    node.NodeEnd.Y -= (float)(DeltaY * dif);
+            //    node.NodePosition.Y -= (float)(DeltaY * dif);
 
-                node.NodeEnd.X -= (float)(DeltaX * dif);
-                node.NodePosition.X -= (float)(DeltaX * dif);
+            //    node.NodeEnd.X -= (float)(DeltaX * dif);
+            //    node.NodePosition.X -= (float)(DeltaX * dif);
 
-                node.Direction = node.NodePosition - node.NodeEnd;
-                node.Direction.Normalize();
+            //    node.Direction = node.NodePosition - node.NodeEnd;
+            //    node.Direction.Normalize();
 
-                node.Angle = MathHelper.ToDegrees((float)Math.Atan2(node.Direction.Y, node.Direction.X));
-                node.TangentAngle = node.Angle - 90;
+            //    node.Angle = MathHelper.ToDegrees((float)Math.Atan2(node.Direction.Y, node.Direction.X));
+            //    node.TangentAngle = node.Angle - 90;
 
-                node.TangentDirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(node.TangentAngle)),
-                                                    (float)Math.Sin(MathHelper.ToRadians(node.TangentAngle)));
+            //    node.TangentDirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(node.TangentAngle)),
+            //                                        (float)Math.Sin(MathHelper.ToRadians(node.TangentAngle)));
 
-                NewNodes.Add(node);
+            //    NewNodes.Add(node);
 
-            } 
-            #endregion
+            //} 
+            //#endregion
 
-            NodeList = NewNodes;
+            //NodeList = NewNodes;
 
 
             for (int i = 2; i < 100; i += 2)
@@ -166,11 +166,11 @@ namespace ToonLightning
             }
 
 
-            for (int i = 0; i < 100; i += 2)
-            {
-                vertices2[i] = new VertexPositionColor(new Vector3(NodeList[i / 2].NodePosition + (NodeList[i / 2].TangentDirection * NodeList[i / 2].Width), 0), Color.White);
-                vertices2[i + 1] = new VertexPositionColor(new Vector3(NodeList[i / 2].NodePosition - (NodeList[i / 2].TangentDirection * NodeList[i / 2].Width), 0), Color.White);
-            }
+            //for (int i = 0; i < 100; i += 2)
+            //{
+            //    vertices2[i] = new VertexPositionColor(new Vector3(NodeList[i / 2].NodePosition + (NodeList[i / 2].TangentDirection * NodeList[i / 2].Width), 0), Color.White);
+            //    vertices2[i + 1] = new VertexPositionColor(new Vector3(NodeList[i / 2].NodePosition - (NodeList[i / 2].TangentDirection * NodeList[i / 2].Width), 0), Color.White);
+            //}
         }
 
         public void LoadContent(ContentManager content)
@@ -180,44 +180,13 @@ namespace ToonLightning
 
         public void Update(GameTime gameTime)
         {
-            ////timeR += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-
-            ////if (curInd < vertices2.Length-8)
-            ////{
-            ////    vertices2[curInd].Color = Color.White;
-            ////    vertices2[curInd+1].Color = Color.White;
-            ////    vertices2[curInd + 2].Color = Color.White;
-            ////    vertices2[curInd + 3].Color = Color.White;
-            ////    vertices2[curInd + 4].Color = Color.White;
-            ////    vertices2[curInd + 5].Color = Color.White;
-            ////    vertices2[curInd + 6].Color = Color.White;
-            ////    vertices2[curInd + 7].Color = Color.White;
-            ////    vertices2[curInd + 8].Color = Color.White;
-
-            ////    //timeR = 0;
-            ////    curInd += 8;
-            ////}
-
-            //if (vertices2[98].Color == Color.White)
-            //{
-            //    if (curInd2 < vertices2.Length - 5)
-            //    {
-            //        vertices2[curInd2].Color = Color.Transparent;
-            //        vertices2[curInd2 + 1].Color = Color.Transparent;
-            //        vertices2[curInd2 + 2].Color = Color.Transparent;
-            //        vertices2[curInd2 + 3].Color = Color.Transparent;
-            //        vertices2[curInd2 + 4].Color = Color.Transparent;
-            //        vertices2[curInd2 + 5].Color = Color.Transparent;
-                    
-            //        curInd2 += 5;
-            //    }
-            //}
+           
         }
 
         public void Draw(GraphicsDevice graphics)
         {
-            graphics.DrawUserPrimitives(PrimitiveType.LineList, vertices, 0, 2);
-            graphics.DrawUserPrimitives(PrimitiveType.LineList, vertices2, 0, 98);
+            graphics.DrawUserPrimitives(PrimitiveType.LineList, vertices, 0, 98);
+            //graphics.DrawUserPrimitives(PrimitiveType.TriangleStrip, vertices2, 0, 98);
 
         }
     }
