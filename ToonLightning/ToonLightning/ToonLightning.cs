@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace ToonLightning
 {
@@ -18,16 +19,19 @@ namespace ToonLightning
             public float Angle, Length;
         }
 
-        const int length = 102;
+        int length = 202;
 
-        VertexPositionColor[] vertices = new VertexPositionColor[length];
+        VertexPositionColor[] vertices;// = new VertexPositionColor[length];
         List<Node> Nodes = new List<Node>();
 
         public Vector2 StartPosition, EndPosition;
 
-        public ToonLightning()
+        public ToonLightning(int len)
         {
+            length = len;
+            vertices = new VertexPositionColor[length];
             StartPosition = new Vector2(100, 400);
+            EndPosition = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
 
             Node firstNode = new Node() { startPosition = StartPosition, Angle = Random.Next(0, 45), Length = Random.Next(5, 20) };
             firstNode.EndPosition = firstNode.startPosition + new Vector2((float)Math.Cos(MathHelper.ToRadians(firstNode.Angle)) * firstNode.Length, (float)Math.Sin(MathHelper.ToRadians(firstNode.Angle)) * firstNode.Length);
@@ -38,9 +42,9 @@ namespace ToonLightning
             {
                 float ang;
 
-                if (Random.NextDouble() >= 0.25)
+                if (Random.NextDouble() >= 0.2)
                 {
-                    ang = (MathHelper.Lerp(Nodes[Nodes.Count - 1].Angle, Random.Next(-360, 360), 0.1f));
+                    ang = (MathHelper.Lerp(Nodes[Nodes.Count - 1].Angle, Random.Next(-360, 360), 0.2f));
                 }
                 else
                 {
@@ -49,19 +53,41 @@ namespace ToonLightning
 
                 Node secondNode = new Node() { startPosition = Nodes[i-1].EndPosition, Angle = ang, Length = Random.Next(5, 20) };
                 secondNode.EndPosition = secondNode.startPosition + new Vector2((float)Math.Cos(MathHelper.ToRadians(secondNode.Angle)) * secondNode.Length, (float)Math.Sin(MathHelper.ToRadians(secondNode.Angle)) * secondNode.Length);
+
                 Nodes.Add(secondNode);
             }
 
+            float DeltaY = Nodes[Nodes.Count - 1].EndPosition.Y - EndPosition.Y;
+            float DeltaX = Nodes[Nodes.Count - 1].EndPosition.X - EndPosition.X;
+
+            List<Node> NewNodes = new List<Node>();
+            NewNodes.Add(Nodes[0]);
+            NewNodes.Add(Nodes[1]);
+
+
+            for (int i = 2; i < length / 2; i++)
+            {
+                Node node = Nodes[i];
+                double dif = (i / (double)(length/2));
+
+                node.EndPosition.Y -= (float)(DeltaY * dif);
+                node.startPosition.Y -= (float)(DeltaY * dif);
+
+                node.EndPosition.X -= (float)(DeltaX * dif);
+                node.startPosition.X -= (float)(DeltaX * dif);
+
+                NewNodes.Add(node);
+            }
+            
             vertices[0] = new VertexPositionColor(new Vector3(firstNode.startPosition, 0), Color.White);
             vertices[1] = new VertexPositionColor(new Vector3(firstNode.EndPosition, 0), Color.White);
 
 
             for (int i = 2; i < length; i += 2)
             {
-                vertices[i] = new VertexPositionColor(new Vector3(Nodes[i/2].startPosition, 0), Color.White);
-                vertices[i + 1] = new VertexPositionColor(new Vector3(Nodes[i/2].EndPosition, 0), Color.White);
+                vertices[i] = new VertexPositionColor(new Vector3(NewNodes[(i / 2) - 1].EndPosition, 0), Color.White);
+                vertices[i + 1] = new VertexPositionColor(new Vector3(NewNodes[i / 2].EndPosition, 0), Color.White);
             }
-           
         }
 
         public void LoadContent(ContentManager content)

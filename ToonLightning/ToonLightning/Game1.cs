@@ -24,11 +24,12 @@ namespace ToonLightning
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
             Content.RootDirectory = "Content";
+            IsMouseVisible = true;
         }
                 
         protected override void Initialize()
         {
-            LightningList.Add(new ToonLightning());
+            LightningList.Add(new ToonLightning(202));
             base.Initialize();
         }
         
@@ -50,7 +51,7 @@ namespace ToonLightning
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
                 LightningList.Clear();
-                ToonLightning newLightning = new ToonLightning();
+                ToonLightning newLightning = new ToonLightning(GetEven((int)Vector2.Distance(new Vector2(100, 400), new Vector2(Mouse.GetState().X, Mouse.GetState().Y))/6));
                 LightningList.Add(newLightning);
             }
 
@@ -71,6 +72,18 @@ namespace ToonLightning
             }
 
             base.Draw(gameTime);
+        }
+
+        private int GetEven(int num)
+        {
+            if (num % 2 == 0)
+            {
+                return num;
+            }
+            else
+            {
+                return num + 1;
+            }
         }
     }
 }
