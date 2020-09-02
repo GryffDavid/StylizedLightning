@@ -47,12 +47,19 @@ namespace ToonLightning
         
         protected override void Update(GameTime gameTime)
         {
+            if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+            {
+                LightningList.Clear();
+                ToonLightning newLightning = new ToonLightning();
+                LightningList.Add(newLightning);
+            }
+
             base.Update(gameTime);
         }
         
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             foreach (EffectPass pass in BasicEffect.CurrentTechnique.Passes)
             {
                 pass.Apply();
