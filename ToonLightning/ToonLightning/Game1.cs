@@ -29,7 +29,7 @@ namespace ToonLightning
                 
         protected override void Initialize()
         {
-            LightningList.Add(new ToonLightning(202));
+            LightningList.Add(new ToonLightning(102));
             base.Initialize();
         }
         
@@ -51,7 +51,7 @@ namespace ToonLightning
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
                 LightningList.Clear();
-                ToonLightning newLightning = new ToonLightning(GetEven((int)Vector2.Distance(new Vector2(100, 400), new Vector2(Mouse.GetState().X, Mouse.GetState().Y))/6));
+                ToonLightning newLightning = new ToonLightning(GetEven((int)Vector2.Distance(new Vector2(100, 400), new Vector2(Mouse.GetState().X, Mouse.GetState().Y))/16));
                 LightningList.Add(newLightning);
             }
 
