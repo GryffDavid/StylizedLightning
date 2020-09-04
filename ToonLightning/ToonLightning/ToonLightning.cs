@@ -14,7 +14,7 @@ namespace ToonLightning
         Texture2D Block;
         static Random Random = new Random();
 
-        Vector2 EndPosition;
+        Vector2 EndPosition, StartPosition;
 
         public class Node
         {
@@ -22,20 +22,26 @@ namespace ToonLightning
             public float TangentAngle, Angle, Length, Width;
         }
 
+        public Vector2 LengthRange;
+
         int TotalLength = 100;
 
         VertexPositionColor[] vertices;// = new VertexPositionColor[200];
         VertexPositionColor[] vertices2;// = new VertexPositionColor[200];
         
         public List<Node> NodeList = new List<Node>();
-
-
-        public ToonLightning()
+                
+        public ToonLightning(int segments, int width, Vector2 startPoint, Vector2 endPoint, Vector2 lenRang)
         {
+            LengthRange = lenRang;
+
+            TotalLength = segments;
+
             vertices = new VertexPositionColor[TotalLength];
             vertices2 = new VertexPositionColor[TotalLength];
 
-            EndPosition = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
+            EndPosition = endPoint;
+            StartPosition = startPoint;
 
             for (int i = 0; i < TotalLength/2; i++)
             {
@@ -46,7 +52,7 @@ namespace ToonLightning
                 {
                     newNode = new Node()
                     {
-                        NodePosition = new Vector2(100, 100),
+                        NodePosition = StartPosition,
                         Angle = Random.Next(-90, 90),
                         Width = Random.Next(5, 10)
                     };
@@ -62,8 +68,8 @@ namespace ToonLightning
                     vertices[i] = new VertexPositionColor(new Vector3(NodeList[0].NodePosition, 0), Color.White);
                     vertices[i + 1] = new VertexPositionColor(new Vector3(NodeList[0].NodeEnd, 0), Color.White);
 
-                    vertices2[0] = new VertexPositionColor(new Vector3(100, 100, 0), Color.White);
-                    vertices2[1] = new VertexPositionColor(new Vector3(100, 110, 0), Color.White);
+                    vertices2[0] = new VertexPositionColor(new Vector3(StartPosition, 0), Color.White);
+                    vertices2[1] = new VertexPositionColor(new Vector3(StartPosition.X,StartPosition.Y + 10, 0), Color.White);
                 }
                 else 
                 #endregion
@@ -84,7 +90,7 @@ namespace ToonLightning
 
                     if (Random.NextDouble() > 0.8)
                     {
-                        lenp = Random.Next(80, 100);
+                        lenp = Random.Next((int)LengthRange.X, (int)LengthRange.Y);
 
                         int m;
 
@@ -106,7 +112,7 @@ namespace ToonLightning
                     {
                         NodePosition = NodeList[i-1].NodeEnd,
                         Angle = ang,
-                        Width = MathHelper.Lerp(NodeList[i-1].Width, Random.Next(0, 5), 0.5f)
+                        Width = MathHelper.Lerp(NodeList[i - 1].Width, Random.Next(0, width), 0.5f)
                     };
 
                     if (i > (TotalLength/2)-5)
@@ -146,42 +152,11 @@ namespace ToonLightning
                 //node.NodePosition.X -= (float)(DeltaX * dif);
 
             }
-
-            
-
-            //NodeList = NewNodes; 
-
             #endregion
-
-            //for (int i = 2; i < TotalLength; i += 2)
-            //{
-            //    vertices[i] = new VertexPositionColor(new Vector3(NodeList[(i / 2) - 1].NodeEnd, 0), Color.White);
-            //    vertices[i + 1] = new VertexPositionColor(new Vector3(NodeList[i / 2].NodeEnd, 0), Color.White);
-            //}
-
-
-
-
-
-
+            
 
             Vector2 diffy;
             float angl;
-
-            //diffy = (NodeList[2].NodeEnd - NodeList[0].NodeEnd);
-            //angl = (float)Math.Atan2(diffy.Y, diffy.X);
-            //angl -= (float)MathHelper.ToRadians(90 + Random.Next(-5, 5));
-
-            //NodeList[0].TangentDirection = new Vector2((float)Math.Cos(angl), (float)Math.Sin(angl));
-            //NodeList[0].TangentDirection.Normalize();
-
-
-            //diffy = (NodeList[3].NodeEnd - NodeList[1].NodeEnd);
-            //angl = (float)Math.Atan2(diffy.Y, diffy.X);
-            //angl -= (float)MathHelper.ToRadians(90 + Random.Next(-5, 5));
-
-            //NodeList[1].TangentDirection = new Vector2((float)Math.Cos(angl), (float)Math.Sin(angl));
-            //NodeList[1].TangentDirection.Normalize();
 
             
             for (int p = 1; p < TotalLength/2-1; p++)
@@ -209,14 +184,28 @@ namespace ToonLightning
 
         public void Update(GameTime gameTime)
         {
-           
+            for (int i = 0; i < vertices2.Length - 1; i++)
+            {
+                vertices2[i].Color = Color.Lerp(vertices2[i].Color, Color.White * 0f, 0.05f);
+            }
         }
 
         public void Draw(GraphicsDevice graphics)
         {
             //graphics.DrawUserPrimitives(PrimitiveType.LineList, vertices, 0, TotalLength / 2);
             graphics.DrawUserPrimitives(PrimitiveType.TriangleStrip, vertices2, 0, TotalLength-2);
+        }
 
+        private int GetEven(int num)
+        {
+            if (num % 2 == 0)
+            {
+                return num;
+            }
+            else
+            {
+                return num + 1;
+            }
         }
     }
 }

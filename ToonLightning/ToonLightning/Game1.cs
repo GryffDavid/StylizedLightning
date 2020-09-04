@@ -19,6 +19,9 @@ namespace ToonLightning
         List<ToonLightning> LightningList = new List<ToonLightning>();
         Texture2D blockTex;
         SpriteFont font;
+        Random Random = new Random();
+
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -30,7 +33,7 @@ namespace ToonLightning
                 
         protected override void Initialize()
         {
-            LightningList.Add(new ToonLightning());
+            LightningList.Add(new ToonLightning(100, 15, new Vector2(100, 100), new Vector2(1280/2, 720/2), new Vector2(80, 100)));
             base.Initialize();
         }
         
@@ -55,9 +58,12 @@ namespace ToonLightning
         {
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
+                Vector2 thing = new Vector2(100, 100) - new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
+
+                int numSeg = (int)MathHelper.Clamp(GetEven((int)thing.Length() / 10), 4, (float)double.PositiveInfinity);
                 LightningList.Clear();
-                ToonLightning newLightning = new ToonLightning();
-                LightningList.Add(newLightning);
+                ToonLightning newLightning = new ToonLightning(numSeg, 15, new Vector2(100, 100), new Vector2(Mouse.GetState().X, Mouse.GetState().Y), new Vector2(80, 100));
+                LightningList.Add(newLightning);             
             }
 
             foreach (ToonLightning bolt in LightningList)
