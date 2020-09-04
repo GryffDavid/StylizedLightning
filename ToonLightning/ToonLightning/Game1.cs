@@ -63,7 +63,7 @@ namespace ToonLightning
         {
             if (Mouse.GetState().LeftButton == ButtonState.Pressed)
             {
-                Vector2 thing = new Vector2(100, 100) - new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
+                Vector2 thing = new Vector2(232, 462) - new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
 
                 int numSeg = (int)MathHelper.Clamp(GetEven((int)thing.Length() / 10), 4, (float)double.PositiveInfinity);
                 LightningList.Clear();

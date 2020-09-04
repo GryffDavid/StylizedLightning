@@ -19,7 +19,7 @@ namespace ToonLightning
         public class Node
         {
             public Vector2 NodePosition, NodeEnd, Direction, TangentDirection;
-            public float TangentAngle, Angle, Length, Width;
+            public float Angle, Width;
         }
 
         Color Color = Color.White;
@@ -41,8 +41,8 @@ namespace ToonLightning
 
             TotalLength = segments;
 
-            vertices = new VertexPositionColor[TotalLength];
-            vertices2 = new VertexPositionColor[TotalLength];
+            vertices = new VertexPositionColor[TotalLength+10];
+            vertices2 = new VertexPositionColor[TotalLength+10];
 
             EndPosition = endPoint;
             StartPosition = startPoint;
@@ -131,6 +131,7 @@ namespace ToonLightning
 
                     newNode.Direction = new Vector2((float)Math.Cos(MathHelper.ToRadians(newNode.Angle)), 
                                                     (float)Math.Sin(MathHelper.ToRadians(newNode.Angle)));
+
                     newNode.NodeEnd = newNode.NodePosition + (newNode.Direction * lenp);
 
                     NodeList.Add(newNode);
@@ -190,7 +191,7 @@ namespace ToonLightning
         {
             for (int i = 0; i < vertices2.Length - 1; i++)
             {
-                vertices2[i].Color = Color.Lerp(vertices2[i].Color, Color.Transparent, 0.1f);
+                vertices2[i].Color = Color.Lerp(vertices2[i].Color, Color.Transparent, 0.05f);
             }
 
             //if (curInd < vertices2.Length-8)
