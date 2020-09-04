@@ -21,12 +21,14 @@ namespace ToonLightning
         SpriteFont font;
         Random Random = new Random();
 
+        Texture2D Background;
+
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
+            graphics.PreferredBackBufferWidth = 1920;
+            graphics.PreferredBackBufferHeight = 1080;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -45,8 +47,11 @@ namespace ToonLightning
             font = Content.Load<SpriteFont>("SpriteFont1");
 
             BasicEffect = new BasicEffect(GraphicsDevice);
-            BasicEffect.Projection = Matrix.CreateOrthographicOffCenter(0, 1280, 720, 0, 0, 1);
+            BasicEffect.Projection = Matrix.CreateOrthographicOffCenter(0, 1920, 1080, 0, 0, 1);
             BasicEffect.VertexColorEnabled = true;
+
+            Background = Content.Load<Texture2D>("Screenie114");
+
         }
         
         protected override void UnloadContent()
@@ -62,7 +67,7 @@ namespace ToonLightning
 
                 int numSeg = (int)MathHelper.Clamp(GetEven((int)thing.Length() / 10), 4, (float)double.PositiveInfinity);
                 LightningList.Clear();
-                ToonLightning newLightning = new ToonLightning(numSeg, 15, new Vector2(100, 100), new Vector2(Mouse.GetState().X, Mouse.GetState().Y), new Vector2(80, 100));
+                ToonLightning newLightning = new ToonLightning(numSeg, 15, new Vector2(232, 462), new Vector2(Mouse.GetState().X, Mouse.GetState().Y), new Vector2(80, 100));
                 LightningList.Add(newLightning);             
             }
 
@@ -77,13 +82,14 @@ namespace ToonLightning
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-            //spriteBatch.Begin();
+            spriteBatch.Begin();
+            spriteBatch.Draw(Background, Background.Bounds, Color.White);
             //for (int i = 0; i < LightningList[0].NodeList.Count; i++)
             //{
             //    spriteBatch.Draw(blockTex, LightningList[0].NodeList[i].NodeEnd, Color.Yellow);
             //    spriteBatch.DrawString(font, i.ToString(), LightningList[0].NodeList[i].NodePosition, Color.Red);
             //}
-            //spriteBatch.End();
+            spriteBatch.End();
 
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, null, null, RasterizerState.CullNone);
             foreach (EffectPass pass in BasicEffect.CurrentTechnique.Passes)

@@ -22,9 +22,13 @@ namespace ToonLightning
             public float TangentAngle, Angle, Length, Width;
         }
 
+        Color Color = Color.White;
+
         public Vector2 LengthRange;
 
         int TotalLength = 100;
+
+        int curInd2 = 0;
 
         VertexPositionColor[] vertices;// = new VertexPositionColor[200];
         VertexPositionColor[] vertices2;// = new VertexPositionColor[200];
@@ -65,11 +69,11 @@ namespace ToonLightning
                     NodeList.Add(newNode);
 
 
-                    vertices[i] = new VertexPositionColor(new Vector3(NodeList[0].NodePosition, 0), Color.White);
-                    vertices[i + 1] = new VertexPositionColor(new Vector3(NodeList[0].NodeEnd, 0), Color.White);
+                    vertices[i] = new VertexPositionColor(new Vector3(NodeList[0].NodePosition, 0), Color);
+                    vertices[i + 1] = new VertexPositionColor(new Vector3(NodeList[0].NodeEnd, 0), Color);
 
-                    vertices2[0] = new VertexPositionColor(new Vector3(StartPosition, 0), Color.White);
-                    vertices2[1] = new VertexPositionColor(new Vector3(StartPosition.X,StartPosition.Y + 10, 0), Color.White);
+                    vertices2[0] = new VertexPositionColor(new Vector3(StartPosition, 0), Color);
+                    vertices2[1] = new VertexPositionColor(new Vector3(StartPosition.X,StartPosition.Y + 10, 0), Color);
                 }
                 else 
                 #endregion
@@ -112,7 +116,7 @@ namespace ToonLightning
                     {
                         NodePosition = NodeList[i-1].NodeEnd,
                         Angle = ang,
-                        Width = MathHelper.Lerp(NodeList[i - 1].Width, Random.Next(0, width), 0.5f)
+                        Width = MathHelper.Lerp(NodeList[i - 1].Width, Random.Next(0, width), 0.4f)
                     };
 
                     if (i > (TotalLength/2)-5)
@@ -172,8 +176,8 @@ namespace ToonLightning
 
             for (int i = 2; i < TotalLength; i += 2)
             {
-                vertices2[i] = new VertexPositionColor(new Vector3(NodeList[i / 2].NodeEnd + (NodeList[i / 2].TangentDirection * NodeList[i / 2].Width), 0), Color.White);
-                vertices2[i + 1] = new VertexPositionColor(new Vector3(NodeList[i / 2].NodeEnd - (NodeList[i / 2].TangentDirection * NodeList[i / 2].Width), 0), Color.White);
+                vertices2[i] = new VertexPositionColor(new Vector3(NodeList[i / 2].NodeEnd + (NodeList[i / 2].TangentDirection * NodeList[i / 2].Width), 0), Color);
+                vertices2[i + 1] = new VertexPositionColor(new Vector3(NodeList[i / 2].NodeEnd - (NodeList[i / 2].TangentDirection * NodeList[i / 2].Width), 0), Color);
             }
         }
 
@@ -186,8 +190,39 @@ namespace ToonLightning
         {
             for (int i = 0; i < vertices2.Length - 1; i++)
             {
-                vertices2[i].Color = Color.Lerp(vertices2[i].Color, Color.White * 0f, 0.05f);
+                vertices2[i].Color = Color.Lerp(vertices2[i].Color, Color.Transparent, 0.1f);
             }
+
+            //if (curInd < vertices2.Length-8)
+            //{
+            //    vertices2[curInd].Color = Color.White;
+            //    vertices2[curInd+1].Color = Color.White;
+            //    vertices2[curInd + 2].Color = Color.White;
+            //    vertices2[curInd + 3].Color = Color.White;
+            //    vertices2[curInd + 4].Color = Color.White;
+            //    vertices2[curInd + 5].Color = Color.White;
+            //    vertices2[curInd + 6].Color = Color.White;
+            //    vertices2[curInd + 7].Color = Color.White;
+            //    vertices2[curInd + 8].Color = Color.White;
+
+            //    //timeR = 0;
+            //    curInd += 8;
+            //}
+
+            //if (vertices2[vertices2.Length-1].Color == Color.White)
+            //{
+            //    if (curInd2 < vertices2.Length -5)
+            //    {
+            //        vertices2[curInd2].Color = Color.Transparent;
+            //        vertices2[curInd2 + 1].Color = Color.Transparent;
+            //        vertices2[curInd2 + 2].Color = Color.Transparent;
+            //        vertices2[curInd2 + 3].Color = Color.Transparent;
+            //        vertices2[curInd2 + 4].Color = Color.Transparent;
+            //        vertices2[curInd2 + 5].Color = Color.Transparent;
+
+            //        curInd2 += 5;
+            //    }
+            //}
         }
 
         public void Draw(GraphicsDevice graphics)
