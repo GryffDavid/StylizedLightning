@@ -24,6 +24,7 @@ namespace ToonLightning
 
         VertexPositionColor[] vertices = new VertexPositionColor[200];
         VertexPositionColor[] vertices2 = new VertexPositionColor[200];
+        VertexPositionColor[] vertices3 = new VertexPositionColor[200];
 
         float timeR = 0;
         int curInd = 0;
@@ -148,14 +149,14 @@ namespace ToonLightning
                 node.NodeEnd.X -= (float)(DeltaX * dif);
                 node.NodePosition.X -= (float)(DeltaX * dif);
 
-                node.Direction = NodeList[i].NodeEnd - NodeList[i - 1].NodePosition;
-                node.Direction.Normalize();
+                //node.Direction = NodeList[i].NodeEnd - NodeList[i - 1].NodePosition;
+                //node.Direction.Normalize();
 
-                node.Angle = MathHelper.ToDegrees((float)Math.Atan2(node.Direction.Y, node.Direction.X));
-                node.TangentAngle = node.Angle - 90;
+                //node.Angle = MathHelper.ToDegrees((float)Math.Atan2(node.Direction.Y, node.Direction.X));
+                //node.TangentAngle = node.Angle - 90;
 
-                node.TangentDirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(node.TangentAngle)),
-                                                    (float)Math.Sin(MathHelper.ToRadians(node.TangentAngle)));
+                //node.TangentDirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(node.TangentAngle)),
+                //                                    (float)Math.Sin(MathHelper.ToRadians(node.TangentAngle)));
 
                 NewNodes.Add(node);
             }
@@ -174,6 +175,15 @@ namespace ToonLightning
                 vertices2[i] = new VertexPositionColor(new Vector3(NodeList[i / 2].NodeEnd + (NodeList[i / 2].TangentDirection * NodeList[i / 2].Width), 0), Color.White);
                 vertices2[i + 1] = new VertexPositionColor(new Vector3(NodeList[i / 2].NodeEnd - (NodeList[i / 2].TangentDirection * NodeList[i / 2].Width), 0), Color.White);
             }
+
+            for (int i = 0; i < 100; i += 2)
+            {
+                vertices3[i] = new VertexPositionColor(vertices[i+2].Position, Color.Aqua);
+                vertices3[i+1] = new VertexPositionColor(vertices[i+5].Position, Color.Aqua);
+            }
+
+            
+            
         }
 
         public void LoadContent(ContentManager content)
@@ -190,6 +200,7 @@ namespace ToonLightning
         {
             graphics.DrawUserPrimitives(PrimitiveType.LineList, vertices, 0, 98);
             graphics.DrawUserPrimitives(PrimitiveType.LineList, vertices2, 0, 98);
+            graphics.DrawUserPrimitives(PrimitiveType.LineList, vertices3, 0, 30);
 
         }
     }
