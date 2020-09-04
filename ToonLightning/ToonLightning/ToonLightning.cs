@@ -189,7 +189,7 @@ namespace ToonLightning
         public void Draw(GraphicsDevice graphics)
         {
             graphics.DrawUserPrimitives(PrimitiveType.LineList, vertices, 0, 98);
-            graphics.DrawUserPrimitives(PrimitiveType.TriangleStrip, vertices2, 0, 98);
+            graphics.DrawUserPrimitives(PrimitiveType.LineList, vertices2, 0, 98);
 
         }
     }
