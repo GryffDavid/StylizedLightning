@@ -2,7 +2,7 @@
 Written in C# with Microsoft XNA/Monogame. Originally written in March 2017. 
 A stylized, dynamic lightning effect created programmatically so that the effect doesn't have to be manually animated.
 
-Creates a bolt of lightning between two points
+Creates a bolt of lightning between two points 
 
     ToonLightning(int segments, int width, Vector2 startPoint, Vector2 endPoint, Vector2 lengthRange)
 
